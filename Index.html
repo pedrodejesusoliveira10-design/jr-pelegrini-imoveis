@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JR Pelegrini Imóveis – Casas Novas à Venda em Itanhaém/SP</title>
+  <meta name="description" content="Casas novas com piscina e área gourmet em Itanhaém. Construtora JR Pelegrini: imóveis prontos para morar e em obras em Nova Itanhaém, Cibratel e Bopiranga. Financiamento Caixa e FGTS.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .brand-font {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    .modal-backdrop {
+      background-color: rgba(11, 27, 43, 0.75);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!-- BARRA DE GESTÃO DO ADMINISTRADOR (VISÍVEL APENAS QUANDO LOGADO) -->
+  <aside id="admin-bar" class="hidden bg-slate-900 text-white text-xs py-2.5 px-4 sticky top-0 z-50 border-b border-amber-500/40 shadow-md">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="font-bold text-amber-300 uppercase tracking-wide">Modo Administrador Ativo</span>
+        <span class="text-slate-400 hidden sm:inline">| Painel de Gestão da Construtora</span>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <button type="button" onclick="abrirModalImovel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 shadow-xs">
+          <span>+ Criar Novo Anúncio</span>
+        </button>
+        <button type="button" onclick="exportarDadosJSON()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1.5 rounded transition-colors" title="Baixar cópia dos imóveis">
+          Exportar Backup
+        </button>
+        <button type="button" onclick="restaurarPadrao()" class="bg-slate-800 hover:bg-rose-950/60 text-slate-300 hover:text-rose-300 border border-slate-700 px-2.5 py-1.5 rounded transition-colors" title="Restaurar lista original">
+          Restaurar Originais
+        </button>
+        <button type="button" onclick="fazerLogoutAdmin()" class="bg-rose-700 hover:bg-rose-800 text-white font-medium px-3 py-1.5 rounded transition-colors">
+          Sair
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- BARRA DE CONTATO RÁPIDO DO PLANTÃO DE VENDAS -->
+  <div class="bg-[#0b1b2b] text-slate-200 text-xs py-2.5 px-4 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span class="font-medium">Plantão de Vendas em Itanhaém – Atendimento todos os dias, inclusive sábados, domingos e feriados</span>
+      </div>
+      <div class="flex items-center gap-5 text-xs">
+        <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+gostaria+de+informa%C3%A7%C3%B5es+sobre+os+im%C3%B3veis+da+JR+Pelegrini+em+Itanha%C3%A9m." target="_blank" class="hover:text-emerald-400 font-semibold transition-colors flex items-center gap-1.5">
+          <span class="text-emerald-400">WhatsApp Vendas:</span> (13) 99661-9491
+        </a>
+        <span class="text-slate-500 hidden md:inline">|</span>
+        <span class="text-slate-300 hidden md:inline">Financiamento Caixa • Uso de FGTS</span>
+        <span class="text-slate-500 hidden md:inline">|</span>
+        <button type="button" onclick="verificarOuAbrirLogin()" id="btn-topo-admin" class="text-slate-400 hover:text-white transition-colors underline font-medium">
+          Área do Administrador
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CABEÇALHO PRINCIPAL -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- LOGOTIPO INSTITUCIONAL JR PELEGRINI -->
+      <a href="#inicio" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 bg-[#0b1b2b] text-white flex items-center justify-center font-bold text-lg rounded tracking-wider shadow-sm group-hover:bg-[#122b44] transition-colors">
+          JR
+        </div>
+        <div>
+          <span class="brand-font text-2xl font-bold tracking-tight text-[#0b1b2b] block leading-none">
+            PELEGRINI
+          </span>
+          <span class="text-[10px] tracking-widest uppercase font-semibold text-slate-500 block mt-1">
+            Imóveis & Construtora
+          </span>
+        </div>
+      </a>
+
+      <!-- MENU PRINCIPAL -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-700">
+        <a href="#imoveis" class="hover:text-[#0b1b2b] transition-colors">Imóveis Disponíveis</a>
+        <a href="#casas-piscina" class="hover:text-[#0b1b2b] transition-colors">Casas com Piscina</a>
+        <a href="#financiamento" class="hover:text-[#0b1b2b] transition-colors">Financiamento & FGTS</a>
+        <a href="#sobre" class="hover:text-[#0b1b2b] transition-colors">Sobre a Construtora</a>
+        <a href="#duvidas" class="hover:text-[#0b1b2b] transition-colors">Dúvidas Comuns</a>
+        <a href="#contato" class="hover:text-[#0b1b2b] transition-colors">Contato</a>
+      </nav>
+
+      <!-- BOTÃO DIRETO WHATSAPP -->
+      <div class="flex items-center gap-3">
+        <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+quero+agendar+uma+visita+aos+im%C3%B3veis+da+JR+Pelegrini." target="_blank" class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1faa54] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded shadow-sm transition-colors">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span>Agendar Visita</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION REALISTA & ELEGANTE -->
+  <section id="inicio" class="relative bg-[#0b1b2b] text-white py-16 lg:py-24 border-b border-slate-300 overflow-hidden">
+    <div class="absolute inset-0 opacity-15 bg-cover bg-center mix-blend-luminosity pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80');"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-3xl space-y-5">
+        
+        <div class="inline-flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded text-xs font-semibold text-slate-200">
+          <span>Itanhaém – SP</span>
+          <span>•</span>
+          <span>Casas Prontas para Morar e em Construção</span>
+        </div>
+
+        <h1 class="brand-font text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
+          Casas Novas em Itanhaém com Piscina e Área Gourmet
+        </h1>
+
+        <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
+          More com conforto ou garanta o refúgio da sua família no litoral sul de São Paulo. Projetos modernos com acabamento em porcelanato, prontas para morar e aprovadas para <strong>financiamento bancário Caixa</strong> com uso do seu FGTS.
+        </p>
+
+        <div class="pt-3 flex flex-wrap gap-4">
+          <a href="#imoveis" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-6 py-3.5 rounded shadow transition-colors">
+            <span>Ver Casas Disponíveis</span>
+            <span>↓</span>
+          </a>
+          <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+gostaria+de+uma+simula%C3%A7%C3%A3o+de+financiamento+Caixa+para+im%C3%B3vel+em+Itanha%C3%A9m." target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-medium text-sm px-6 py-3.5 rounded transition-colors">
+            <span>Simular Financiamento Bancário</span>
+            <span>→</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- FILTRO DE BUSCA RÁPIDA DE IMÓVEIS -->
+      <div class="mt-12 bg-white text-slate-800 p-5 sm:p-6 rounded-lg shadow-xl border border-slate-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Localização / Bairro</label>
+            <select id="filtro-bairro" onchange="filtrarImoveis()" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+              <option value="todos">Todos os Bairros</option>
+              <option value="Nova Itanhaém">Nova Itanhaém</option>
+              <option value="Cibratel">Cibratel I / II</option>
+              <option value="Bopiranga">Bopiranga</option>
+              <option value="Gaivota">Balneário Gaivota</option>
+              <option value="Suarão">Suarão</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Dormitórios</label>
+            <select id="filtro-quartos" onchange="filtrarImoveis()" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+              <option value="todos">Qualquer quantidade</option>
+              <option value="2">2 Dormitórios</option>
+              <option value="3">3 Dormitórios (ou mais)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Lazer / Extras</label>
+            <select id="filtro-lazer" onchange="filtrarImoveis()" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+              <option value="todos">Todos</option>
+              <option value="piscina">Com Piscina Privativa</option>
+              <option value="gourmet">Com Churrasqueira Gourmet</option>
+            </select>
+          </div>
+
+          <div class="flex items-end">
+            <button type="button" onclick="filtrarImoveis()" class="w-full bg-[#0b1b2b] hover:bg-[#122b44] text-white font-semibold text-sm py-2 px-4 rounded h-[38px] transition-colors">
+              Filtrar Imóveis
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PONTOS ESSENCIAIS DO COMPRADOR -->
+  <section class="bg-white py-8 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-slate-700">
+        
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center font-bold text-[#0b1b2b] shrink-0 text-xs">
+            01
+          </div>
+          <div>
+            <strong class="text-xs sm:text-sm font-bold text-slate-900 block">Documentação 100%</strong>
+            <span class="text-xs text-slate-500">Escritura definitiva e Habite-se liberado</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center font-bold text-[#0b1b2b] shrink-0 text-xs">
+            02
+          </div>
+          <div>
+            <strong class="text-xs sm:text-sm font-bold text-slate-900 block">Aceita Financiamento</strong>
+            <span class="text-xs text-slate-500">Aprovamos seu crédito com a Caixa</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center font-bold text-[#0b1b2b] shrink-0 text-xs">
+            03
+          </div>
+          <div>
+            <strong class="text-xs sm:text-sm font-bold text-slate-900 block">Use seu FGTS</strong>
+            <span class="text-xs text-slate-500">Utilize seu saldo como parte da entrada</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center font-bold text-[#0b1b2b] shrink-0 text-xs">
+            04
+          </div>
+          <div>
+            <strong class="text-xs sm:text-sm font-bold text-slate-900 block">Direto com Construtor</strong>
+            <span class="text-xs text-slate-500">Negociação transparente e sem surpresas</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CATÁLOGO DINÂMICO DE CASAS DISPONÍVEIS -->
+  <section id="imoveis" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Catálogo Atualizado</span>
+          <h2 class="brand-font text-2xl sm:text-3xl font-bold text-[#0b1b2b]">
+            Imóveis em Destaque em Itanhaém
+          </h2>
+          <p id="total-imoveis-label" class="text-xs text-slate-500 mt-1">Carregando catálogo...</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="abrirModalImovel()" id="btn-novo-anuncio-inline" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-3.5 py-2 rounded transition-colors shadow-xs">
+            + Cadastrar Novo Imóvel
+          </button>
+          <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+gostaria+de+receber+a+tabela+completa+de+im%C3%B3veis+da+JR+Pelegrini." target="_blank" class="text-xs font-semibold text-blue-900 hover:underline">
+            Solicitar tabela completa em PDF →
+          </a>
+        </div>
+      </div>
+
+      <!-- GRID DINÂMICA DE CARDS DOS IMÓVEIS (GERADO VIA JAVASCRIPT A PARTIR DO BANCO LOCAL) -->
+      <div id="grid-imoveis" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Renderizado dinamicamente por renderizarImoveis() -->
+      </div>
+
+      <div id="nenhum-imovel-msg" class="hidden text-center py-12 bg-white rounded border border-slate-200 my-6 p-8">
+        <p class="text-slate-600 font-semibold text-sm">Nenhum imóvel encontrado com os filtros selecionados.</p>
+        <button type="button" onclick="limparFiltros()" class="mt-3 text-xs bg-[#0b1b2b] text-white px-4 py-2 rounded">
+          Limpar filtros e ver todos
+        </button>
+      </div>
+
+      <div class="mt-12 text-center">
+        <p class="text-xs text-slate-600 mb-3">
+          Tem interesse em conferir outras opções de plantas e lotes disponíveis?
+        </p>
+        <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+gostaria+de+conhecer+todos+os+im%C3%B3veis+dispon%C3%ADveis+da+JR+Pelegrini." target="_blank" class="inline-flex items-center gap-2 bg-white border border-slate-300 hover:border-slate-400 text-slate-800 font-semibold text-xs px-5 py-3 rounded transition-colors shadow-xs">
+          <span>Falar no WhatsApp com o Plantão de Atendimento</span>
+          <span>→</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FINANCIAMENTO & SIMULADOR BANCÁRIO -->
+  <section id="financiamento" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <div class="lg:col-span-6 space-y-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Facilidade de Compra</span>
+          <h2 class="brand-font text-2xl sm:text-3xl font-bold text-[#0b1b2b]">
+            Como Funciona o Financiamento da Sua Casa
+          </h2>
+          
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Todas as casas da <strong>JR Pelegrini</strong> são entregues com a documentação 100% aprovada para financiamento pela Caixa Econômica Federal e pelos principais bancos privados (Santander, Itaú e Bradesco).
+          </p>
+
+          <div class="space-y-3 pt-2 text-sm text-slate-700">
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <strong class="text-slate-900 block font-semibold">1. Uso do seu FGTS</strong>
+              <span class="text-xs text-slate-600">Você pode usar o saldo do FGTS acumulado para abater o valor de entrada ou diminuir as parcelas.</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <strong class="text-slate-900 block font-semibold">2. Composição de Renda</strong>
+              <span class="text-xs text-slate-600">É possível somar a renda de familiares (cônjuge, filhos, pais ou irmãos) para aumentar o valor aprovado do financiamento.</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+              <strong class="text-slate-900 block font-semibold">3. Entrada Facilitada</strong>
+              <span class="text-xs text-slate-600">Para imóveis em construção, parcelamos a sua entrada diretamente conosco durante o andamento da obra.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO DE SIMULAÇÃO RÁPIDA -->
+        <div class="lg:col-span-6">
+          <div class="bg-slate-50 p-6 sm:p-8 rounded-lg border border-slate-300 shadow-sm">
+            <h3 class="brand-font text-xl font-bold text-[#0b1b2b] mb-1">
+              Simule seu Financiamento
+            </h3>
+            <p class="text-xs text-slate-500 mb-5">
+              Receba uma análise prévia e a estimativa das parcelas pelo WhatsApp.
+            </p>
+
+            <form onsubmit="handleSimulacaoSubmit(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Seu Nome Completo</label>
+                <input type="text" id="sim-nome" required placeholder="Ex: Carlos Eduardo Silva" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp com DDD</label>
+                  <input type="tel" id="sim-tel" required placeholder="(11) 99999-9999" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Renda Familiar Bruta Aprox.</label>
+                  <input type="text" id="sim-renda" placeholder="Ex: R$ 6.500,00" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Possui FGTS?</label>
+                  <select id="sim-fgts" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+                    <option value="Sim">Sim, pretendo utilizar</option>
+                    <option value="Não">Não possuo</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Região Desejada</label>
+                  <select id="sim-imovel" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+                    <option value="Nova Itanhaém">Nova Itanhaém</option>
+                    <option value="Cibratel">Cibratel</option>
+                    <option value="Bopiranga">Bopiranga</option>
+                    <option value="Gaivota">Balneário Gaivota</option>
+                    <option value="Suarão">Suarão</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 rounded shadow transition-colors">
+                Receber Simulação Gratuita no WhatsApp →
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CASAS COM PISCINA & DIFERENCIAIS -->
+  <section id="casas-piscina" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Padrão Construtivo</span>
+        <h2 class="brand-font text-2xl sm:text-3xl font-bold text-[#0b1b2b] mt-1 mb-3">
+          Por que Nossas Casas em Itanhaém se Destacam
+        </h2>
+        <p class="text-slate-600 text-sm leading-relaxed">
+          Construir no litoral exige cuidados especiais que muitas construtoras ignoram. Nossas obras seguem critérios rigorosos de isolamento térmico, umidade e proteção contra maresia.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="bg-white p-6 rounded border border-slate-200">
+          <div class="w-10 h-10 bg-[#0b1b2b] text-white rounded flex items-center justify-center font-bold text-sm mb-4">
+            01
+          </div>
+          <h3 class="font-bold text-base text-[#0b1b2b] mb-2">Piscina em Alvenaria com Cascata</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Não utilizamos fibra fina. Nossas piscinas são estruturadas em alvenaria com revestimento de qualidade, iluminação e ponto de cascata para garantir durabilidade e valorização real.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded border border-slate-200">
+          <div class="w-10 h-10 bg-[#0b1b2b] text-white rounded flex items-center justify-center font-bold text-sm mb-4">
+            02
+          </div>
+          <h3 class="font-bold text-base text-[#0b1b2b] mb-2">Impermeabilização Reforçada</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Fundações com baldrames duplamente impermeabilizados e paredes tratadas contra umidade ascendente, evitando infiltrações e manchas típicas da região praiana.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded border border-slate-200">
+          <div class="w-10 h-10 bg-[#0b1b2b] text-white rounded flex items-center justify-center font-bold text-sm mb-4">
+            03
+          </div>
+          <h3 class="font-bold text-base text-[#0b1b2b] mb-2">Porcelanato e Esquadrias em Alumínio</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Pisos retificados em porcelanato em toda a área social e esquadrias de alumínio com pintura eletrostática, resistentes à oxidação da maresia litorânea.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SOBRE A CONSTRUTORA -->
+  <section id="sobre" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <div class="lg:col-span-5">
+          <div class="relative rounded-lg overflow-hidden border border-slate-200 shadow-md">
+            <img 
+              src="https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=800&q=80" 
+              alt="Obras e Construção JR Pelegrini" 
+              class="w-full h-80 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b1b2b] via-transparent to-transparent opacity-80"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <span class="text-[10px] uppercase tracking-wider font-semibold text-emerald-400">Compromisso e Entrega</span>
+              <p class="text-sm font-bold">Mais de dezenas de famílias já realizaram o sonho da casa na praia com a JR Pelegrini.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Quem Somos</span>
+          <h2 class="brand-font text-2xl sm:text-3xl font-bold text-[#0b1b2b]">
+            Empreendimentos Imobiliários JR & Pellegrin
+          </h2>
+          
+          <p class="text-slate-600 text-sm leading-relaxed">
+            A <strong>JR Pelegrini</strong> nasceu com o objetivo de oferecer casas térreas bem estruturadas, seguras e com excelente padrão estético para quem quer morar ou veranear no litoral paulista.
+          </p>
+
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Cuidamos de todas as etapas: desde a escolha rigorosa de terrenos em ruas altas e com infraestrutura, elaboração do projeto arquitetônico moderno, execução da obra com acompanhamento de engenharia, até a averbação final no Cartório de Registro de Imóveis para entrega das chaves.
+          </p>
+
+          <div class="pt-2 flex flex-wrap gap-6 text-slate-800 text-xs font-semibold">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+              <span>Projetos Aprovados na Prefeitura</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+              <span>Habite-se Concedido</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+              <span>Assessoria de Crédito Bancário</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DÚVIDAS FREQUENTES (FAQ) -->
+  <section id="duvidas" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Transparência Total</span>
+        <h2 class="brand-font text-2xl sm:text-3xl font-bold text-[#0b1b2b] mt-1">
+          Perguntas Frequentes de Compradores
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        
+        <div class="bg-white p-5 rounded border border-slate-200">
+          <h3 class="font-bold text-sm text-[#0b1b2b] mb-1">Qual é o valor mínimo de entrada para financiar?</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Na maioria das operações com a Caixa Econômica Federal, o banco financia até 80% do valor de avaliação do imóvel, sendo necessário cerca de 20% de entrada. Esse valor pode ser composto por dinheiro à vista, saldo de FGTS e, no caso de casas em obra, parcelamento direto conosco.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded border border-slate-200">
+          <h3 class="font-bold text-sm text-[#0b1b2b] mb-1">Como agendar uma visita para ver as casas prontas e as obras?</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Nosso plantão funciona todos os dias, inclusive sábados, domingos e feriados. Basta entrar em contato pelo nosso WhatsApp oficial e agendar o horário que melhor se encaixe na sua rotina. Nós acompanhamos você em cada imóvel.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded border border-slate-200">
+          <h3 class="font-bold text-sm text-[#0b1b2b] mb-1">A documentação dos imóveis está regularizada?</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Sim. Todas as nossas casas são entregues com matrícula individualizada no Cartório de Registro de Imóveis de Itanhaém, Habite-se concedido pela Prefeitura Municipal e CND do INSS quitada.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded border border-slate-200">
+          <h3 class="font-bold text-sm text-[#0b1b2b] mb-1">Posso comprar um imóvel ainda em fase de obras?</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Com certeza. Comprar durante a obra é a opção mais econômica, pois os valores são menores e você consegue parcelar o fluxo de entrada diretamente com a construtora até a entrega das chaves.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTATO & LOCALIZAÇÃO -->
+  <section id="contato" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <div class="lg:col-span-6 space-y-4">
+          <h2 class="brand-font text-2xl font-bold text-[#0b1b2b]">Fale com a JR Pelegrini</h2>
+          <p class="text-sm text-slate-600">
+            Estamos à disposição para tirar dúvidas, enviar vídeos dos imóveis e agendar sua visita aos empreendimentos em Itanhaém.
+          </p>
+
+          <div class="space-y-3 text-sm text-slate-700 pt-2">
+            <div>
+              <strong class="block text-slate-900 font-semibold">Local de Atendimento:</strong>
+              <span>Itanhaém – SP (Litoral Sul)</span><br>
+              <span class="text-xs text-slate-500">Atendimento presencial nos plantões e obras com agendamento prévio</span>
+            </div>
+
+            <div>
+              <strong class="block text-slate-900 font-semibold">WhatsApp de Plantão:</strong>
+              <span><a href="https://api.whatsapp.com/send?phone=5513996619491" target="_blank" class="text-emerald-700 hover:underline font-bold text-base">(13) 99661-9491</a></span>
+            </div>
+
+            <div>
+              <strong class="block text-slate-900 font-semibold">Horário:</strong>
+              <span>Segunda a Domingo: 08:00 às 19:00</span>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+quero+conversar+com+o+plant%C3%A3o+de+vendas+da+JR+Pelegrini." target="_blank" class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1faa54] text-white font-semibold text-sm px-6 py-3 rounded shadow transition-colors">
+              <span>Iniciar Conversa no WhatsApp</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <div class="bg-slate-50 border border-slate-300 rounded p-6 shadow-sm space-y-3">
+            <h4 class="font-bold text-sm text-[#0b1b2b]">Empreendimentos em Itanhaém:</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Realizamos obras e temos opções disponíveis nos bairros mais procurados da cidade:
+            </p>
+            <ul class="text-xs text-slate-700 space-y-2 pt-1">
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#0b1b2b]"></span>
+                <span><strong>Nova Itanhaém:</strong> casas térreas com piscina, rua pavimentada e moradores fixos.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#0b1b2b]"></span>
+                <span><strong>Cibratel I e II:</strong> região tradicional lado praia, excelente valorização.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#0b1b2b]"></span>
+                <span><strong>Bopiranga e Gaivota:</strong> opções com preço acessível e parcelamento facilitado.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#0b1b2b]"></span>
+                <span><strong>Suarão:</strong> infraestrutura completa de comércio próximo.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ CLÁSSICO -->
+  <footer class="bg-[#0b1b2b] text-slate-400 py-10 text-xs border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-800">
+        <div>
+          <span class="brand-font text-white font-bold text-lg block">JR PELEGRINI</span>
+          <span>Empreendimentos Imobiliários em Itanhaém – SP</span>
+        </div>
+        <div class="flex items-center gap-5 text-slate-300">
+          <a href="#imoveis" class="hover:text-white">Imóveis</a>
+          <a href="#financiamento" class="hover:text-white">Financiamento</a>
+          <a href="#sobre" class="hover:text-white">Sobre</a>
+          <a href="#contato" class="hover:text-white">Contato</a>
+          <button type="button" onclick="verificarOuAbrirLogin()" class="text-amber-400 hover:text-amber-300 underline font-semibold">
+            Painel Admin
+          </button>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500">
+        <div>
+          JR Pelegrini Imóveis © 2026. Todos os direitos reservados.
+        </div>
+        <div>
+          Itanhaém – Litoral Sul de São Paulo
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+estou+no+site+da+JR+Pelegrini+e+gostaria+de+informa%C3%A7%C3%B5es+sobre+as+casas." target="_blank" class="fixed bottom-5 right-5 z-40 flex items-center gap-2 bg-[#25D366] hover:bg-[#1faa54] text-white px-4 py-3 rounded-full shadow-lg transition-transform hover:scale-105 font-semibold text-xs" title="WhatsApp Vendas">
+    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    <span>Plantão de Vendas</span>
+  </a>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: LOGIN DO ADMINISTRADOR -->
+  <!-- ========================================================================= -->
+  <div id="modal-login" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-md w-full border border-slate-300 overflow-hidden transform transition-all">
+      <div class="bg-[#0b1b2b] text-white p-5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xs">
+            ADM
+          </div>
+          <div>
+            <h3 class="font-bold text-sm">Painel Administrativo</h3>
+            <span class="text-[11px] text-slate-300">JR Pelegrini Imóveis</span>
+          </div>
+        </div>
+        <button type="button" onclick="fecharModalLogin()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <form onsubmit="handleLoginAdmin(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Usuário do Administrador</label>
+          <input type="text" id="login-usuario" required placeholder="admin" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Senha de Acesso</label>
+          <input type="password" id="login-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+        </div>
+
+        <div id="login-erro" class="hidden text-xs text-rose-600 bg-rose-50 p-2.5 rounded border border-rose-200">
+          Usuário ou senha incorretos. Verifique suas credenciais.
+        </div>
+
+        <div class="p-3 bg-amber-50 rounded border border-amber-200 text-[11px] text-amber-800">
+          <strong>Acesso padrão de teste / inicial:</strong><br>
+          Usuário: <code class="bg-amber-100 px-1 py-0.5 rounded">admin</code> | Senha: <code class="bg-amber-100 px-1 py-0.5 rounded">jr2024</code>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" onclick="fecharModalLogin()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-800">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-[#0b1b2b] hover:bg-[#122b44] text-white font-semibold text-xs px-5 py-2.5 rounded shadow transition-colors">
+            Acessar Painel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: CRIAR / EDITAR ANÚNCIO DE IMÓVEL (COM UPLOAD DE FOTOS E VÍDEOS) -->
+  <!-- ========================================================================= -->
+  <div id="modal-imovel" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full border border-slate-300 my-8 overflow-hidden transform transition-all">
+      <div class="bg-[#0b1b2b] text-white p-5 flex items-center justify-between">
+        <div>
+          <h3 id="modal-imovel-titulo" class="font-bold text-base">Cadastrar Novo Imóvel</h3>
+          <p class="text-xs text-slate-300">Preencha os dados e faça o upload de fotos/vídeos para o catálogo.</p>
+        </div>
+        <button type="button" onclick="fecharModalImovel()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <form id="form-imovel" onsubmit="salvarImovel(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <input type="hidden" id="imovel-id">
+
+        <!-- LINHA 1: TÍTULO E REFERÊNCIA -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Título do Anúncio *</label>
+            <input type="text" id="imovel-titulo" required placeholder="Ex: Casa Térrea com Piscina e Cascata" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Código / Referência *</label>
+            <input type="text" id="imovel-ref" required placeholder="Ex: JR-107" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+          </div>
+        </div>
+
+        <!-- LINHA 2: BAIRRO, STATUS E VALOR -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Bairro em Itanhaém *</label>
+            <select id="imovel-bairro" required class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+              <option value="Nova Itanhaém">Nova Itanhaém</option>
+              <option value="Cibratel">Cibratel I / II</option>
+              <option value="Bopiranga">Bopiranga</option>
+              <option value="Gaivota">Balneário Gaivota</option>
+              <option value="Suarão">Suarão</option>
+              <option value="Centro">Centro / Praia do Sonho</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Status da Obra *</label>
+            <select id="imovel-status" required class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+              <option value="Pronta para Morar">Pronta para Morar</option>
+              <option value="Em Fase de Obras">Em Fase de Obras</option>
+              <option value="Em Acabamento">Em Acabamento</option>
+              <option value="Lado Praia">Lado Praia</option>
+              <option value="Alto Padrão">Alto Padrão</option>
+              <option value="Vendido">Vendido</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Valor de Venda (R$) *</label>
+            <input type="text" id="imovel-preco" required placeholder="Ex: R$ 325.000" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]">
+          </div>
+        </div>
+
+        <!-- LINHA 3: CARACTERÍSTICAS TÉCNICAS (DORMS, PISCINA, VAGAS, METRAGEM) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded border border-slate-200">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Qtd Dormitórios</label>
+            <select id="imovel-quartos" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800">
+              <option value="2">2 Dormitórios</option>
+              <option value="3">3 Dormitórios</option>
+              <option value="4">4 Dormitórios</option>
+            </select>
+            <input type="text" id="imovel-quartos-texto" placeholder="Ex: (1 Suíte)" class="mt-1 w-full bg-white border border-slate-300 rounded px-2 py-1 text-[11px] text-slate-700">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Piscina Privativa</label>
+            <select id="imovel-piscina" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800">
+              <option value="sim">Sim</option>
+              <option value="nao">Não</option>
+            </select>
+            <input type="text" id="imovel-piscina-texto" placeholder="Ex: Com Cascata" class="mt-1 w-full bg-white border border-slate-300 rounded px-2 py-1 text-[11px] text-slate-700">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Garagem / Vagas</label>
+            <input type="text" id="imovel-vagas" placeholder="Ex: 2 Vagas" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800">
+            <span class="text-[10px] text-slate-400">Vagas de auto</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Área / Metragens</label>
+            <input type="text" id="imovel-area" placeholder="Ex: 150m² / 75m² constr." class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800">
+            <span class="text-[10px] text-slate-400">Terreno e construção</span>
+          </div>
+        </div>
+
+        <!-- LINHA 4: FINANCIAMENTO & CHURRASQUEIRA -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Selo de Financiamento</label>
+            <input type="text" id="imovel-tag-fin" placeholder="Ex: Financia pela Caixa • Aceita FGTS" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Possui Área Gourmet / Churrasqueira?</label>
+            <select id="imovel-gourmet" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800">
+              <option value="sim">Sim, área gourmet com churrasqueira</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- LINHA 5: DESCRIÇÃO -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Descrição Comercial do Imóvel *</label>
+          <textarea id="imovel-descricao" required rows="3" placeholder="Ex: Sala com pé direito elevado, cozinha tipo americana com bancadas de granito, acabamento em porcelanato retificado, quintal amplo nos fundos..." class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#0b1b2b]"></textarea>
+        </div>
+
+        <!-- SEÇÃO DE MÍDIA: UPLOAD DE FOTOS -->
+        <div class="border border-slate-300 rounded-lg p-4 bg-slate-50/60 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-xs text-[#0b1b2b]">Foto de Capa do Imóvel</h4>
+              <p class="text-[11px] text-slate-500">Faça o upload de uma imagem do seu computador/celular ou insira a URL.</p>
+            </div>
+            <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-medium">JPEG / PNG / WebP</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">Opção 1: Fazer Upload de Imagem</label>
+              <input type="file" id="upload-foto-arquivo" accept="image/*" onchange="processarUploadFoto(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-[#0b1b2b] file:text-white hover:file:bg-[#122b44] cursor-pointer">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">Opção 2: Ou Cole o Link da Foto (URL)</label>
+              <input type="url" id="imovel-imagem-url" oninput="atualizarPreviewFoto(this.value)" placeholder="https://..." class="w-full bg-white border border-slate-300 rounded px-3 py-1.5 text-xs text-slate-800">
+            </div>
+          </div>
+
+          <!-- PREVIEW DA IMAGEM -->
+          <div id="preview-foto-container" class="mt-2">
+            <span class="block text-[10px] font-semibold text-slate-500 mb-1">Pré-visualização da Foto:</span>
+            <div class="w-full h-40 bg-slate-200 rounded overflow-hidden relative border border-slate-300 flex items-center justify-center">
+              <img id="img-preview" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80" alt="Preview" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <!-- SEÇÃO DE MÍDIA: UPLOAD / LINK DE VÍDEO -->
+        <div class="border border-slate-300 rounded-lg p-4 bg-slate-50/60 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-xs text-[#0b1b2b]">Vídeo / Tour Virtual do Imóvel</h4>
+              <p class="text-[11px] text-slate-500">Adicione um vídeo de tour da casa para os clientes assistirem.</p>
+            </div>
+            <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-medium">MP4 / YouTube / Drive</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">Link do Vídeo (YouTube ou MP4 direto)</label>
+              <input type="text" id="imovel-video-url" placeholder="Ex: https://www.youtube.com/watch?v=... ou .mp4" class="w-full bg-white border border-slate-300 rounded px-3 py-1.5 text-xs text-slate-800">
+              <span class="text-[10px] text-slate-400">Pode colar link do YouTube, Google Drive ou servidor.</span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">Ou Enviar Arquivo de Vídeo Curto (.mp4 / .webm)</label>
+              <input type="file" id="upload-video-arquivo" accept="video/*" onchange="processarUploadVideo(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-white hover:file:bg-slate-800 cursor-pointer">
+              <span id="video-upload-status" class="text-[10px] text-emerald-600 font-medium hidden">Arquivo carregado!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTÕES DO FORMULÁRIO -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+          <button type="button" onclick="fecharModalImovel()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-800">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-6 py-2.5 rounded shadow transition-colors">
+            Salvar e Publicar Anúncio
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: REPRODUTOR DE VÍDEO DO TOUR VIRTUAL -->
+  <!-- ========================================================================= -->
+  <div id="modal-video" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-black rounded-lg shadow-2xl max-w-3xl w-full border border-slate-700 overflow-hidden">
+      <div class="bg-[#0b1b2b] text-white p-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          <span id="modal-video-titulo" class="font-bold text-xs sm:text-sm">Tour Virtual do Imóvel</span>
+        </div>
+        <button type="button" onclick="fecharModalVideo()" class="text-slate-400 hover:text-white text-base font-bold">✕ Fechar</button>
+      </div>
+      <div id="modal-video-container" class="aspect-video w-full bg-black flex items-center justify-center">
+        <!-- Inserido dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- NOTIFICAÇÃO TOAST VISUAL -->
+  <!-- ========================================================================= -->
+  <div id="toast-notificacao" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white text-xs px-4 py-3 rounded shadow-xl border border-slate-700 flex items-center gap-2">
+    <span id="toast-icone" class="text-emerald-400 font-bold">✓</span>
+    <span id="toast-texto">Operação concluída com sucesso!</span>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- SCRIPTS DO SITE, SISTEMA ADMIN, LOCALSTORAGE & CRUD COMPLETO -->
+  <!-- ========================================================================= -->
+  <script>
+    // CHAVES DO BANCO DE DADOS LOCAL (LOCALSTORAGE)
+    const STORAGE_KEY_IMOVEIS = 'jr_pelegrini_imoveis_db_v1';
+    const STORAGE_KEY_ADMIN = 'jr_pelegrini_admin_sessao_v1';
+
+    // DADOS INICIAIS BASEADOS NO DRIVE DA CONSTRUTORA JR PELEGRINI EM ITANHAÉM
+    const IMOVEIS_SEED = [
+      {
+        id: "jr-101",
+        ref: "JR-101",
+        status: "Pronta para Morar",
+        bairro: "Nova Itanhaém",
+        quartos: "2",
+        quartosTexto: "(1 Suíte)",
+        piscina: "sim",
+        piscinaTexto: "Com Cascata",
+        vagas: "2 Vagas",
+        area: "150m² terreno • 75m² constr.",
+        preco: "R$ 320.000",
+        tagFinanciamento: "Financia pela Caixa",
+        gourmet: "sim",
+        titulo: "Casa Térrea Moderna com Piscina e Cascata",
+        descricao: "Sala com pé direito alto, cozinha americana integrada, acabamento em porcelanato retificado e churrasqueira coberta nos fundos.",
+        imagem: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80",
+        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      {
+        id: "jr-102",
+        ref: "JR-102",
+        status: "Lado Praia",
+        bairro: "Cibratel",
+        quartos: "3",
+        quartosTexto: "(1 Suíte)",
+        piscina: "sim",
+        piscinaTexto: "Com Deck",
+        vagas: "3 Vagas",
+        area: "180m² terreno • 95m² constr.",
+        preco: "R$ 440.000",
+        tagFinanciamento: "Aceita FGTS",
+        gourmet: "sim",
+        titulo: "Casa Ampla 3 Dormitórios a 400m da Praia",
+        descricao: "Excelente padrão construtivo em bairro nobre, piscina em alvenaria com deck de pedra mineira, ampla varanda gourmet e lavabo externo.",
+        imagem: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+        videoUrl: ""
+      },
+      {
+        id: "jr-103",
+        ref: "JR-103",
+        status: "Pronta para Morar",
+        bairro: "Bopiranga",
+        quartos: "2",
+        quartosTexto: "(1 Suíte)",
+        piscina: "sim",
+        piscinaTexto: "Privativa",
+        vagas: "2 Vagas",
+        area: "140m² terreno • 70m² constr.",
+        preco: "R$ 295.000",
+        tagFinanciamento: "Financia 100%",
+        gourmet: "sim",
+        titulo: "Casa Nova com Piscina e Churrasqueira",
+        descricao: "Excelente custo-benefício para moradia ou investimento em aluguel de temporada. Bairro tranquilo de moradores e fácil acesso à praia.",
+        imagem: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80",
+        videoUrl: ""
+      },
+      {
+        id: "jr-104",
+        ref: "JR-104",
+        status: "Em Fase de Obras",
+        bairro: "Gaivota",
+        quartos: "2",
+        quartosTexto: "(1 Suíte)",
+        piscina: "sim",
+        piscinaTexto: "Inclusa",
+        vagas: "2 Vagas",
+        area: "150m² terreno • 72m² constr.",
+        preco: "R$ 280.000",
+        tagFinanciamento: "Entrada Parcelada",
+        gourmet: "sim",
+        titulo: "Casa Nova com Entrada Parcelada na Obra",
+        descricao: "Condições especiais para compra durante a obra. A 600m da praia, quintal privativo nos fundos com piscina e churrasqueira.",
+        imagem: "https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=800&q=80",
+        videoUrl: ""
+      },
+      {
+        id: "jr-105",
+        ref: "JR-105",
+        status: "Pronta para Morar",
+        bairro: "Suarão",
+        quartos: "2",
+        quartosTexto: "(1 Suíte)",
+        piscina: "sim",
+        piscinaTexto: "Com Cascata",
+        vagas: "2 Vagas",
+        area: "145m² terreno • 74m² constr.",
+        preco: "R$ 310.000",
+        tagFinanciamento: "Financia pela Caixa",
+        gourmet: "sim",
+        titulo: "Casa Térrea Individualizada no Suarão",
+        descricao: "Próxima a todo o comércio do Suarão (mercados, bancos, padarias). Esquadrias pretas em alumínio, bancadas em granito e área de lazer.",
+        imagem: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+        videoUrl: ""
+      },
+      {
+        id: "jr-106",
+        ref: "JR-106",
+        status: "Alto Padrão",
+        bairro: "Cibratel",
+        quartos: "3",
+        quartosTexto: "Suítes",
+        piscina: "sim",
+        piscinaTexto: "Com Hidro",
+        vagas: "3 Vagas",
+        area: "200m² terreno • 135m² constr.",
+        preco: "R$ 550.000",
+        tagFinanciamento: "Aceita Financiamento",
+        gourmet: "sim",
+        titulo: "Sobrado de Alto Padrão a 200m do Mar",
+        descricao: "Fachada imponente em vidro e iluminação em LED, 3 suítes amplas, piscina privativa com hidromassagem e acabamento refinado.",
+        imagem: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+        videoUrl: ""
+      }
+    ];
+
+    // ESTADO DA APLICAÇÃO
+    let listaImoveis = [];
+    let isAdminLogado = false;
+    let fotoEmBase64Temporaria = '';
+    let videoEmBase64Temporaria = '';
+
+    // =========================================================================
+    // INICIALIZAÇÃO
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      carregarImoveis();
+      verificarSessaoAdmin();
+      renderizarImoveis();
+    });
+
+    function carregarImoveis() {
+      const salvo = localStorage.getItem(STORAGE_KEY_IMOVEIS);
+      if (salvo) {
+        try {
+          listaImoveis = JSON.parse(salvo);
+        } catch (e) {
+          console.error("Erro ao carregar do localStorage", e);
+          listaImoveis = [...IMOVEIS_SEED];
+        }
+      } else {
+        listaImoveis = [...IMOVEIS_SEED];
+        salvarNoLocalStorage();
+      }
+    }
+
+    function salvarNoLocalStorage() {
+      localStorage.setItem(STORAGE_KEY_IMOVEIS, JSON.stringify(listaImoveis));
+    }
+
+    // =========================================================================
+    // AUTENTICAÇÃO DO ADMINISTRADOR
+    // =========================================================================
+    function verificarSessaoAdmin() {
+      isAdminLogado = localStorage.getItem(STORAGE_KEY_ADMIN) === 'true';
+      atualizarInterfaceAdmin();
+    }
+
+    function atualizarInterfaceAdmin() {
+      const adminBar = document.getElementById('admin-bar');
+      const btnTopo = document.getElementById('btn-topo-admin');
+      const btnNovoInline = document.getElementById('btn-novo-anuncio-inline');
+
+      if (isAdminLogado) {
+        adminBar.classList.remove('hidden');
+        if (btnNovoInline) btnNovoInline.classList.remove('hidden');
+        if (btnTopo) btnTopo.textContent = 'Painel Admin (Ativo)';
+      } else {
+        adminBar.classList.add('hidden');
+        if (btnNovoInline) btnNovoInline.classList.add('hidden');
+        if (btnTopo) btnTopo.textContent = 'Área do Administrador';
+      }
+    }
+
+    function verificarOuAbrirLogin() {
+      if (isAdminLogado) {
+        mostrarToast('Você já está logado como Administrador!');
+      } else {
+        abrirModalLogin();
+      }
+    }
+
+    function abrirModalLogin() {
+      document.getElementById('login-usuario').value = '';
+      document.getElementById('login-senha').value = '';
+      document.getElementById('login-erro').classList.add('hidden');
+      document.getElementById('modal-login').classList.remove('hidden');
+    }
+
+    function fecharModalLogin() {
+      document.getElementById('modal-login').classList.add('hidden');
+    }
+
+    function handleLoginAdmin(e) {
+      e.preventDefault();
+      const usuario = document.getElementById('login-usuario').value.trim();
+      const senha = document.getElementById('login-senha').value.trim();
+
+      // Credenciais do proprietário
+      if (usuario.toLowerCase() === 'admin' && senha === 'jr2024') {
+        isAdminLogado = true;
+        localStorage.setItem(STORAGE_KEY_ADMIN, 'true');
+        fecharModalLogin();
+        atualizarInterfaceAdmin();
+        renderizarImoveis();
+        mostrarToast('Login de administrador efetuado com sucesso!');
+      } else {
+        document.getElementById('login-erro').classList.remove('hidden');
+      }
+    }
+
+    function fazerLogoutAdmin() {
+      isAdminLogado = false;
+      localStorage.removeItem(STORAGE_KEY_ADMIN);
+      atualizarInterfaceAdmin();
+      renderizarImoveis();
+      mostrarToast('Você saiu do modo administrador.');
+    }
+
+    // =========================================================================
+    // RENDERIZAÇÃO DOS CARDS DE IMÓVEIS NO CATÁLOGO
+    // =========================================================================
+    function renderizarImoveis() {
+      const grid = document.getElementById('grid-imoveis');
+      const totalLabel = document.getElementById('total-imoveis-label');
+      grid.innerHTML = '';
+
+      if (totalLabel) {
+        totalLabel.textContent = `Mostrando ${listaImoveis.length} casas cadastradas pela construtora`;
+      }
+
+      listaImoveis.forEach(imovel => {
+        const isVendido = imovel.status === 'Vendido';
+        const card = document.createElement('div');
+        card.className = `imovel-card bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between ${isVendido ? 'opacity-85' : ''}`;
+        card.setAttribute('data-id', imovel.id);
+        card.setAttribute('data-bairro', imovel.bairro);
+        card.setAttribute('data-quartos', imovel.quartos);
+        card.setAttribute('data-piscina', imovel.piscina);
+        card.setAttribute('data-gourmet', imovel.gourmet || 'sim');
+
+        // Botão de Vídeo se existir
+        let botaoVideoHtml = '';
+        if (imovel.videoUrl) {
+          botaoVideoHtml = `
+            <button type="button" onclick="abrirModalVideo('${imovel.id}')" class="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-semibold px-2.5 py-1 rounded shadow-xs transition-colors">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <span>Ver Tour em Vídeo</span>
+            </button>
+          `;
+        }
+
+        // Barra de Ações Administrativas (visível se logado)
+        let adminAcoesHtml = '';
+        if (isAdminLogado) {
+          adminAcoesHtml = `
+            <div class="bg-slate-900 text-white p-2.5 px-3 flex items-center justify-between text-xs border-b border-slate-800">
+              <div class="flex items-center gap-1.5 font-semibold text-amber-400">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span>Gestão ADM</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="editarImovel('${imovel.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[11px] font-medium transition-colors">
+                  Editar
+                </button>
+                <button type="button" onclick="alternarStatusVendido('${imovel.id}')" class="bg-amber-600 hover:bg-amber-700 text-white px-2 py-1 rounded text-[11px] font-medium transition-colors">
+                  ${isVendido ? 'Reativar' : 'Marcar Vendido'}
+                </button>
+                <button type="button" onclick="excluirImovel('${imovel.id}')" class="bg-rose-700 hover:bg-rose-800 text-white px-2 py-1 rounded text-[11px] font-medium transition-colors" title="Excluir do site">
+                  Excluir
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        // Badge de Status
+        let statusBadgeClass = 'bg-[#0b1b2b] text-white';
+        if (isVendido) statusBadgeClass = 'bg-rose-700 text-white font-bold';
+        else if (imovel.status === 'Em Fase de Obras') statusBadgeClass = 'bg-amber-600 text-white';
+
+        card.innerHTML = `
+          ${adminAcoesHtml}
+          <div>
+            <div class="relative h-56 bg-slate-200 overflow-hidden">
+              <img 
+                src="${imovel.imagem || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80'}" 
+                alt="${imovel.titulo}" 
+                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                loading="lazy"
+              />
+              <span class="absolute top-3 left-3 ${statusBadgeClass} text-[11px] font-semibold px-2.5 py-1 rounded shadow-xs">
+                ${imovel.status}
+              </span>
+              <span class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm text-slate-900 text-xs font-bold px-2 py-1 rounded shadow-xs">
+                Ref: ${imovel.ref}
+              </span>
+              ${imovel.videoUrl ? `<div class="absolute bottom-3 left-3">${botaoVideoHtml}</div>` : ''}
+            </div>
+
+            <div class="p-5">
+              <div class="text-xs text-slate-500 font-medium mb-1">${imovel.bairro} – Itanhaém/SP</div>
+              <h3 class="font-bold text-base text-[#0b1b2b] mb-2 leading-snug">
+                ${imovel.titulo}
+              </h3>
+              
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                ${imovel.descricao}
+              </p>
+
+              <!-- CARACTERÍSTICAS TÉCNICAS -->
+              <div class="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 text-xs text-slate-700 font-medium text-center">
+                <div>
+                  <span class="block font-bold text-slate-900">${imovel.quartos} Dorms</span>
+                  <span class="text-[11px] text-slate-500">${imovel.quartosTexto || '(Suíte)'}</span>
+                </div>
+                <div>
+                  <span class="block font-bold text-slate-900">Piscina</span>
+                  <span class="text-[11px] text-slate-500">${imovel.piscinaTexto || 'Privativa'}</span>
+                </div>
+                <div>
+                  <span class="block font-bold text-slate-900">${imovel.vagas || '2 Vagas'}</span>
+                  <span class="text-[11px] text-slate-500">Garagem</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 pt-0">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <span class="text-[11px] text-slate-400 block">Valor de Venda</span>
+                <span class="text-lg font-bold text-[#0b1b2b]">${imovel.preco}</span>
+              </div>
+              <span class="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-1 rounded font-semibold border border-emerald-200">
+                ${imovel.tagFinanciamento || 'Financia Caixa'}
+              </span>
+            </div>
+
+            ${isVendido ? `
+              <div class="w-full py-2.5 px-4 rounded bg-slate-200 text-slate-600 font-bold text-xs text-center block cursor-not-allowed">
+                Imóvel Vendido
+              </div>
+            ` : `
+              <a href="https://api.whatsapp.com/send?phone=5513996619491&text=Ol%C3%A1%2C+tenho+interesse+na+${encodeURIComponent(imovel.titulo)}+(Ref%3A+${encodeURIComponent(imovel.ref)}+-+${encodeURIComponent(imovel.preco)})." target="_blank" class="w-full py-2.5 px-4 rounded bg-[#0b1b2b] hover:bg-[#122b44] text-white font-medium text-xs text-center block transition-colors">
+                Falar com o Construtor no WhatsApp →
+              </a>
+            `}
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      filtrarImoveis();
+    }
+
+    // =========================================================================
+    // FILTRAGEM DINÂMICA
+    // =========================================================================
+    function filtrarImoveis() {
+      const bairro = document.getElementById('filtro-bairro').value;
+      const quartos = document.getElementById('filtro-quartos').value;
+      const lazer = document.getElementById('filtro-lazer').value;
+
+      const cards = document.querySelectorAll('.imovel-card');
+      let visiveis = 0;
+
+      cards.forEach(card => {
+        const cardBairro = card.getAttribute('data-bairro') || '';
+        const cardQuartos = card.getAttribute('data-quartos') || '';
+        const cardPiscina = card.getAttribute('data-piscina') || '';
+        const cardGourmet = card.getAttribute('data-gourmet') || '';
+
+        let bateBairro = (bairro === 'todos') || (cardBairro.toLowerCase().includes(bairro.toLowerCase()));
+        let bateQuartos = (quartos === 'todos') || (cardQuartos === quartos) || (quartos === '3' && parseInt(cardQuartos) >= 3);
+        let bateLazer = (lazer === 'todos') || 
+                         (lazer === 'piscina' && cardPiscina === 'sim') ||
+                         (lazer === 'gourmet' && cardGourmet === 'sim');
+
+        if (bateBairro && bateQuartos && bateLazer) {
+          card.style.display = 'flex';
+          visiveis++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const msgVazio = document.getElementById('nenhum-imovel-msg');
+      if (msgVazio) {
+        if (visiveis === 0) {
+          msgVazio.classList.remove('hidden');
+        } else {
+          msgVazio.classList.add('hidden');
+        }
+      }
+    }
+
+    function limparFiltros() {
+      document.getElementById('filtro-bairro').value = 'todos';
+      document.getElementById('filtro-quartos').value = 'todos';
+      document.getElementById('filtro-lazer').value = 'todos';
+      filtrarImoveis();
+    }
+
+    // =========================================================================
+    // GESTÃO DE IMÓVEIS (CRIAR, EDITAR, EXCLUIR, VENDIDO)
+    // =========================================================================
+    function abrirModalImovel(idEditar = null) {
+      if (!isAdminLogado) {
+        abrirModalLogin();
+        return;
+      }
+
+      fotoEmBase64Temporaria = '';
+      videoEmBase64Temporaria = '';
+      document.getElementById('upload-foto-arquivo').value = '';
+      document.getElementById('upload-video-arquivo').value = '';
+      document.getElementById('video-upload-status').classList.add('hidden');
+
+      const tituloModal = document.getElementById('modal-imovel-titulo');
+
+      if (idEditar) {
+        const item = listaImoveis.find(i => i.id === idEditar);
+        if (!item) return;
+
+        tituloModal.textContent = `Editar Imóvel (Ref: ${item.ref})`;
+        document.getElementById('imovel-id').value = item.id;
+        document.getElementById('imovel-titulo').value = item.titulo;
+        document.getElementById('imovel-ref').value = item.ref;
+        document.getElementById('imovel-bairro').value = item.bairro;
+        document.getElementById('imovel-status').value = item.status;
+        document.getElementById('imovel-preco').value = item.preco;
+        document.getElementById('imovel-quartos').value = item.quartos;
+        document.getElementById('imovel-quartos-texto').value = item.quartosTexto || '';
+        document.getElementById('imovel-piscina').value = item.piscina;
+        document.getElementById('imovel-piscina-texto').value = item.piscinaTexto || '';
+        document.getElementById('imovel-vagas').value = item.vagas || '2 Vagas';
+        document.getElementById('imovel-area').value = item.area || '';
+        document.getElementById('imovel-tag-fin').value = item.tagFinanciamento || '';
+        document.getElementById('imovel-gourmet').value = item.gourmet || 'sim';
+        document.getElementById('imovel-descricao').value = item.descricao;
+        document.getElementById('imovel-imagem-url').value = item.imagem.startsWith('data:') ? '' : item.imagem;
+        document.getElementById('imovel-video-url').value = item.videoUrl || '';
+
+        atualizarPreviewFoto(item.imagem);
+      } else {
+        tituloModal.textContent = "Cadastrar Novo Imóvel";
+        document.getElementById('imovel-id').value = '';
+        document.getElementById('form-imovel').reset();
+        document.getElementById('imovel-ref').value = `JR-${Math.floor(100 + Math.random() * 900)}`;
+        document.getElementById('imovel-tag-fin').value = "Financia pela Caixa";
+        document.getElementById('imovel-vagas').value = "2 Vagas";
+        document.getElementById('imovel-quartos-texto').value = "(1 Suíte)";
+        document.getElementById('imovel-piscina-texto').value = "Com Cascata";
+        atualizarPreviewFoto('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80');
+      }
+
+      document.getElementById('modal-imovel').classList.remove('hidden');
+    }
+
+    function fecharModalImovel() {
+      document.getElementById('modal-imovel').classList.add('hidden');
+    }
+
+    function editarImovel(id) {
+      abrirModalImovel(id);
+    }
+
+    function excluirImovel(id) {
+      if (!confirm("Tem certeza de que deseja excluir este imóvel do catálogo?")) return;
+      listaImoveis = listaImoveis.filter(i => i.id !== id);
+      salvarNoLocalStorage();
+      renderizarImoveis();
+      mostrarToast("Imóvel excluído com sucesso!");
+    }
+
+    function alternarStatusVendido(id) {
+      const imovel = listaImoveis.find(i => i.id === id);
+      if (!imovel) return;
+      if (imovel.status === 'Vendido') {
+        imovel.status = 'Pronta para Morar';
+        mostrarToast(`Imóvel ${imovel.ref} reativado como Disponível!`);
+      } else {
+        imovel.status = 'Vendido';
+        mostrarToast(`Imóvel ${imovel.ref} marcado como VENDIDO!`);
+      }
+      salvarNoLocalStorage();
+      renderizarImoveis();
+    }
+
+    // =========================================================================
+    // UPLOAD E PROCESSAMENTO DE IMAGENS E VÍDEOS
+    // =========================================================================
+    function processarUploadFoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        fotoEmBase64Temporaria = event.target.result;
+        atualizarPreviewFoto(fotoEmBase64Temporaria);
+        document.getElementById('imovel-imagem-url').value = '';
+        mostrarToast("Foto carregada com sucesso!");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function atualizarPreviewFoto(urlOuBase64) {
+      const img = document.getElementById('img-preview');
+      if (urlOuBase64 && urlOuBase64.trim() !== '') {
+        img.src = urlOuBase64;
+      } else {
+        img.src = 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80';
+      }
+    }
+
+    function processarUploadVideo(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 25 * 1024 * 1024) {
+        alert("O arquivo de vídeo excede 25MB para armazenamento no navegador. Para vídeos mais longos, recomendamos colar o link do YouTube ou Google Drive.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        videoEmBase64Temporaria = event.target.result;
+        document.getElementById('video-upload-status').classList.remove('hidden');
+        mostrarToast("Vídeo pronto para ser salvo!");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function salvarImovel(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('imovel-id').value;
+      const ref = document.getElementById('imovel-ref').value.trim();
+      const titulo = document.getElementById('imovel-titulo').value.trim();
+      const bairro = document.getElementById('imovel-bairro').value;
+      const status = document.getElementById('imovel-status').value;
+      const preco = document.getElementById('imovel-preco').value.trim();
+      const quartos = document.getElementById('imovel-quartos').value;
+      const quartosTexto = document.getElementById('imovel-quartos-texto').value.trim() || `(${quartos} quartos)`;
+      const piscina = document.getElementById('imovel-piscina').value;
+      const piscinaTexto = document.getElementById('imovel-piscina-texto').value.trim() || 'Privativa';
+      const vagas = document.getElementById('imovel-vagas').value.trim() || '2 Vagas';
+      const area = document.getElementById('imovel-area').value.trim();
+      const tagFinanciamento = document.getElementById('imovel-tag-fin').value.trim() || 'Financia Caixa';
+      const gourmet = document.getElementById('imovel-gourmet').value;
+      const descricao = document.getElementById('imovel-descricao').value.trim();
+      
+      // Imagem: usa upload base64 se disponível, senão url digitada, senão padrão
+      let imagemFinal = fotoEmBase64Temporaria;
+      if (!imagemFinal) {
+        imagemFinal = document.getElementById('imovel-imagem-url').value.trim();
+      }
+      if (!imagemFinal) {
+        imagemFinal = 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80';
+      }
+
+      // Vídeo: usa arquivo local se houver ou URL
+      let videoFinal = videoEmBase64Temporaria;
+      if (!videoFinal) {
+        videoFinal = document.getElementById('imovel-video-url').value.trim();
+      }
+
+      if (id) {
+        // Editando existente
+        const index = listaImoveis.findIndex(i => i.id === id);
+        if (index !== -1) {
+          listaImoveis[index] = {
+            ...listaImoveis[index],
+            ref,
+            titulo,
+            bairro,
+            status,
+            preco,
+            quartos,
+            quartosTexto,
+            piscina,
+            piscinaTexto,
+            vagas,
+            area,
+            tagFinanciamento,
+            gourmet,
+            descricao,
+            imagem: imagemFinal,
+            videoUrl: videoFinal
+          };
+          mostrarToast(`Imóvel ${ref} atualizado com sucesso!`);
+        }
+      } else {
+        // Criando novo
+        const novoImovel = {
+          id: 'jr-' + Date.now(),
+          ref,
+          titulo,
+          bairro,
+          status,
+          preco,
+          quartos,
+          quartosTexto,
+          piscina,
+          piscinaTexto,
+          vagas,
+          area,
+          tagFinanciamento,
+          gourmet,
+          descricao,
+          imagem: imagemFinal,
+          videoUrl: videoFinal
+        };
+        listaImoveis.unshift(novoImovel);
+        mostrarToast(`Novo imóvel ${ref} publicado no catálogo!`);
+      }
+
+      salvarNoLocalStorage();
+      fecharModalImovel();
+      renderizarImoveis();
+    }
+
+    // =========================================================================
+    // MODAL DE VÍDEO / TOUR VIRTUAL
+    // =========================================================================
+    function abrirModalVideo(id) {
+      const imovel = listaImoveis.find(i => i.id === id);
+      if (!imovel || !imovel.videoUrl) return;
+
+      const container = document.getElementById('modal-video-container');
+      const titulo = document.getElementById('modal-video-titulo');
+      titulo.textContent = `Tour Virtual: ${imovel.titulo} (Ref: ${imovel.ref})`;
+      container.innerHTML = '';
+
+      let url = imovel.videoUrl.trim();
+
+      // YouTube embed
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        let videoId = '';
+        if (url.includes('v=')) {
+          videoId = url.split('v=')[1].split('&')[0];
+        } else if (url.includes('youtu.be/')) {
+          videoId = url.split('youtu.be/')[1].split('?')[0];
+        }
+        container.innerHTML = `
+          <iframe class="w-full h-full" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `;
+      } 
+      // Arquivo direto ou DataURL
+      else {
+        container.innerHTML = `
+          <video class="w-full h-full" controls autoplay>
+            <source src="${url}">
+            Seu navegador não suporta a exibição direta deste vídeo.
+          </video>
+        `;
+      }
+
+      document.getElementById('modal-video').classList.remove('hidden');
+    }
+
+    function fecharModalVideo() {
+      const container = document.getElementById('modal-video-container');
+      container.innerHTML = '';
+      document.getElementById('modal-video').classList.add('hidden');
+    }
+
+    // =========================================================================
+    // UTILITÁRIOS: BACKUP, RESTAURAÇÃO E TOAST
+    // =========================================================================
+    function exportarDadosJSON() {
+      const dados = JSON.stringify(listaImoveis, null, 2);
+      const blob = new Blob([dados], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `imoveis_jr_pelegrini_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      mostrarToast("Backup exportado com sucesso!");
+    }
+
+    function restaurarPadrao() {
+      if (!confirm("Deseja restaurar a lista original de imóveis? Todas as alterações salvas serão substituídas pelas casas originais do catálogo.")) return;
+      listaImoveis = [...IMOVEIS_SEED];
+      salvarNoLocalStorage();
+      renderizarImoveis();
+      mostrarToast("Catálogo original restaurado!");
+    }
+
+    function mostrarToast(texto) {
+      const toast = document.getElementById('toast-notificacao');
+      const label = document.getElementById('toast-texto');
+      label.textContent = texto;
+      toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-[-100px]', 'opacity-0');
+      }, 3500);
+    }
+
+    // =========================================================================
+    // FORMULÁRIO DE SIMULAÇÃO DE FINANCIAMENTO
+    // =========================================================================
+    function handleSimulacaoSubmit(e) {
+      e.preventDefault();
+      const nome = document.getElementById('sim-nome').value.trim();
+      const tel = document.getElementById('sim-tel').value.trim();
+      const renda = document.getElementById('sim-renda').value.trim() || 'A informar';
+      const fgts = document.getElementById('sim-fgts').value;
+      const imovel = document.getElementById('sim-imovel').value;
+
+      const texto = `Olá! Solicitei uma simulação de financiamento pelo site:%0A%0A` +
+                    `*Nome:* ${encodeURIComponent(nome)}%0A` +
+                    `*WhatsApp:* ${encodeURIComponent(tel)}%0A` +
+                    `*Renda Bruta:* ${encodeURIComponent(renda)}%0A` +
+                    `*Tem FGTS:* ${encodeURIComponent(fgts)}%0A` +
+                    `*Imóvel de Interesse:* ${encodeURIComponent(imovel)}%0A%0A` +
+                    `Poderiam me passar a estimativa de parcelas e entrada?`;
+
+      window.open(`https://api.whatsapp.com/send?phone=5513996619491&text=${texto}`, '_blank');
+    }
+  </script>
+</body>
+</html>
